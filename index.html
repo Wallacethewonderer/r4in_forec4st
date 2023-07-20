@@ -14,16 +14,29 @@
         </div>
     </nav>
 
-    <div class="container text-center">
-        <div class="row">
-          <div class="col">
-            
+    <div>
+
+      <div class="searchContainer">
+        <form>
+          <div class="mb-3">
+          <label for="searchInput" class="form-label">Search by city name</label>
+          <input type="search" class="form-control" id="searchInput" aria-describedby="searchHelp">
+          <small id="searchHelp" class="form-text text-muted">Enter city name to see Current Weather and 5-day Forecast.</small>
           </div>
-          <div class="col">
-            
-          </div>
+          <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+        <div id="searchHistory">
+        <button type="button" class="btn btn-secondary btn-sm" id="clearButton" aria-describedby="buttonHelp">Clear</button>
+        <small id="buttonHelp" class="form-text text-muted">Click to clear the search history.</small>
+        </div>
       </div>
-    
+
+      <div class="weatherContainer">
+        <div id="currentWeather"></div>
+        <div id="forecast"></div>
+      </div>
+
+    </div>
     
     <script src="./assets/js/script.js"></script>
 </body>
