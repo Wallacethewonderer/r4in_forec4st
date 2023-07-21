@@ -17,17 +17,18 @@
     <div>
 
       <div class="searchContainer">
-        <form>
+        <form id="searchForm">
           <div class="mb-3">
           <label for="searchInput" class="form-label">Search by city name</label>
           <input type="search" class="form-control" id="searchInput" aria-describedby="searchHelp">
-          <small id="searchHelp" class="form-text text-muted">Enter city name to see Current Weather and 5-day Forecast.</small>
+          <small id="searchHelp" class="form-text text-muted">Enter city name to see Current Weather and 5-day Forecast.（Precisely with format like "San Jose, US".）</small>
           </div>
           <button type="submit" class="btn btn-primary">Search</button>
         </form>
-        <div id="searchHistory">
-        <button type="button" class="btn btn-secondary btn-sm" id="clearButton" aria-describedby="buttonHelp">Clear</button>
-        <small id="buttonHelp" class="form-text text-muted">Click to clear the search history.</small>
+        <div>
+          <div id="searchHistory"></div>
+          <button type="button" class="btn btn-secondary btn-sm" id="clearButton" aria-describedby="buttonHelp">Clear</button>
+          <small id="buttonHelp" class="form-text text-muted">Click to clear the search history.</small>
         </div>
       </div>
 
