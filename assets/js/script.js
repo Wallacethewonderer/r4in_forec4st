@@ -10,6 +10,7 @@ searchEvent.addEventListener("submit", function(event) {
     event.preventDefault();
     var nameOfCity = city.value.trim();
     if (nameOfCity !== "") {
+        //function that gets weather data
         getWeather(nameOfCity);
     }
 });
@@ -26,8 +27,8 @@ function getWeather(nameOfCity) {
                 response.json().then(function(data) {
                     // Function that displays current weather data
                     displayCurrent(data);
-                    // Function that saves search history
-                    saveHistory(data);
+                    //function that saves search history
+                    saveHistory(nameOfCity);
                 });
             } else {
                 alert("Error: " + response.statusText);
@@ -42,6 +43,7 @@ function getWeather(nameOfCity) {
         .then(function(response) {
             if (response.ok) {
                 response.json().then(function(data) {
+                    // Function that displays forecast data
                     displayForecast(data);
                 });
             } else {
@@ -95,10 +97,14 @@ function displayForecast(data) {
 };
 
 // Function that saves search history
-function saveHistory(data) {
+function saveHistory(nameOfCity) {
     var savedHistory = JSON.parse(localStorage.getItem("SearchHistory")) || [];
-    savedHistory.push(data.name);
-    localStorage.setItem("SearchHistory", JSON.stringify(savedHistory));
+
+    if (!savedHistory.includes(nameOfCity)) {
+        savedHistory.push(nameOfCity);
+        localStorage.setItem("SearchHistory", JSON.stringify(savedHistory));
+    }
+
     displayHistory();
 };
 
@@ -106,21 +112,50 @@ function saveHistory(data) {
 function displayHistory() {
     var history = document.querySelector("#searchHistory");
     var savedHistory = JSON.parse(localStorage.getItem("SearchHistory")) || [];
-    var historyHTML = "<h1>Search History</h1>";
+    var clearBtn = document.querySelector("#clearButton");
+    var btnHelper = document.querySelector("#buttonHelp");
 
-    savedHistory.forEach(function (city) {
-        historyHTML += "<button class='historyBtn'>" + city + "</button>";
-    });
+    // Check if there is any search history
+    if (savedHistory.length === 0) {
+        // If not, hide the following elements
+        history.style.display = "none";
+        clearBtn.style.display = "none";
+        btnHelper.style.display = "none";
 
-    history.innerHTML = historyHTML;
+    } else {
+        // If there is, display the following elements
+        history.style.display = "block";
+        clearBtn.style.display = "block";
+        btnHelper.style.display = "block";
 
-    historyElement.querySelectorAll('.historyBtn').forEach(function(button) {
-        button.addEventListener('click', displayHistoryWeather);
-    });
+        var historyHTML = "<h1>Search History</h1>";
+
+        savedHistory.forEach(function (city) {
+            historyHTML += "<button class='historyBtn'>" + city + "</button>";
+        });
+
+        history.innerHTML = historyHTML;
+
+        history.querySelectorAll('.historyBtn').forEach(function(button) {
+            button.addEventListener('click', displayHistoryWeather);
+        });
+    }
 };
 
-// Function that displays weather for search history
+
+// Function that displays weather from search history when buttons are clicked
 function displayHistoryWeather(event) {
     var nameOfCity = event.target.textContent;
     getWeather(nameOfCity);
 };
+// call function to display search history on page load
+displayHistory();
+
+// function for the clear history button
+function clearHistory() {
+    localStorage.clear();
+    displayHistory();
+}
+
+// event listener for the clear history button
+document.getElementById("clearButton").addEventListener("click", clearHistory);
